@@ -1,0 +1,64 @@
+p::before,
+p::after {
+  display: inline-block;
+  content: attr(data-letter);
+  color: hsl(183, 100%, 50%);
+  transition: 375ms ease-in-out;
+  transition-property: opacity, transform;
+}
+p::before {
+  text-transform: uppercase;
+  color: hsl(353, 100%, 50%);
+  transform: translateX(50%);
+  opacity: .6;
+}
+p::after {
+  transform: translateX(-50%);
+  opacity: .4;
+}
+p {
+  margin: 0em .025em;
+  line-height: 1;
+  height: 1em;
+}
+p:hover::before,
+p:hover::after {
+  transform: translateX(0%);
+  opacity: 1;
+}
+
+.tassos {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  font-size: 20vmin;
+  font-family: system-ui, -apple-system, 'Segoe UI', sans-serif;
+  font-weight: 800;
+  padding: .5em .025em;
+
+}
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+.custom-shake {
+  @include do-shake(
+        $name: 'shake-slow', /* {String} is the name for the keyframes animation */
+        $h: 5px, /*  {Number} is the max number for random to assign in x axis */
+        $v: 5px, /* {Number} is the max number for random to assign in y axis */
+        $r: 3deg, /* {Number} is the max number for random rotation */
+        $dur: 100ms, /* {Number} is the animation-duration time value */
+        $precision: .02, /* {Number} is the precision of the keyframes animation. For example .02 generates keyframes each 2% and .1 each 10%. The calculation is $step: 100 * $precision; */
+        $opacity: false,
+        $q: infinite, /* {String} is the animation-iteration-count value */
+        $t: ease-in-out, /* {String} animation-timing-function value */
+        $delay: null, /* {Number} animation-delay time value */
+        $chunk: 100%); /* {Number} is the part of the keyframes where apply the animation */
+}
+
+/* Example shake-crazy */
+.shake-slow-again {
+	@include do-shake('shake-slow', 40, 40, 20, 100ms, .1, $opacity: true);
+}

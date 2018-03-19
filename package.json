@@ -1,0 +1,32 @@
+{
+  "name": "tassos.net",
+  "version": "2.0.0",
+  "description": "Professional website and portfolio for Tassos Lambrou - iOS and Full Stack Software Engineer",
+  "main": "index.html",
+  "directories": {
+    "example": "examples"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "Tassos",
+    "Anastasios",
+    "Lambrou",
+    "Tom",
+    "Web",
+    "Software",
+    "Engineer",
+    "Computer",
+    "Scientist",
+    "Social",
+    "Scientist",
+    "Games",
+    "iOS",
+    "Full",
+    "Stack",
+    "Professional"
+  ],
+  "author": "Tassos Lambrou",
+  "license": "ISC"
+}
