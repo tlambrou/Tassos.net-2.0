@@ -68,20 +68,21 @@ $(document).ready(function() {
   var lineDrawing = anime({
     targets: '#lineDrawing .lines path',
     strokeDashoffset: [anime.setDashoffset, 0],
-    easing: 'easeInOutSine',
-    duration: 1000,
+    easing: 'easeInBack',
+    duration: 800,
     delay: function(el, i) { return i * 200 },
     direction: 'alternate',
-    loop: true
+    loop: false
   });
 
   // $('#title').animateCss('fadeInDown');
   $('#subtitle').animateCss('flipInX');
 
   window.sr = ScrollReveal();
-  sr.reveal('.card');
+  // sr.reveal('.card');
   sr.reveal('.profile-summary');
-  sr.reveal('.grid');
+  // sr.reveal('.grid');
+  sr.reveal('.reveal');
 
 
 

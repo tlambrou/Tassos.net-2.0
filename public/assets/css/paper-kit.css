@@ -1782,7 +1782,7 @@ textarea.form-control {
 }
 
 .section-gold {
-  background-color: #caac90;
+  background-color: #a7a092;
   color: #FFFFFF;
 }
 
@@ -1802,7 +1802,8 @@ textarea.form-control {
 }
 
 .section-dark {
-  background-color: #151f20;
+  /* background-color: #151f20; */
+  background-color: #595E62;
 }
 
 .section-image,
@@ -6781,7 +6782,7 @@ video {
   }
   .presentation-page .section-components .image-container .components-macbook {
     max-width: 580px !important;
-    max-height: 400px !important;
+    max-height: 480px !important;
   }
   .presentation-page .section-components .image-container .social-img,
   .presentation-page .section-components .image-container .share-btn-img {
@@ -7222,14 +7223,19 @@ video {
     max-height: 270px;
     left: -20%;
   }
+  .presentation-page .section-components .components-macbook {
+    left: 0px !important;
+  }
   .presentation-page .section-content .section-description {
     margin-top: 0 !important;
   }
-  .presentation-page .section-components .components-macbook {
-    left: -75px !important;
-  }
   .presentation-page .section-cards .codrops-header {
     margin-top: 10px !important;
+  }
+}
+@media (max-width: 1023px) and (min-width: 992px) {
+  .presentation-page .section-components .components-macbook {
+    left: -160px !important;
   }
 }
 @media (max-width: 1367px) and (min-width: 1024px) {
@@ -7578,7 +7584,7 @@ video {
 
 */
 /*
-	
+
 	1. Buttons
 
  */
@@ -7853,7 +7859,7 @@ a.pswp__share--download:hover {
 }
 
 /*
-	
+
 	4. Caption
 
  */
@@ -7943,8 +7949,8 @@ a.pswp__share--download:hover {
   margin: 0;
 }
 .pswp--css_animation .pswp__preloader__cut {
-  /* 
-  	The idea of animating inner circle is based on Polymer ("material") loading indicator 
+  /*
+  	The idea of animating inner circle is based on Polymer ("material") loading indicator
   	 by Keanu Lee https://blog.keanulee.com/2014/10/20/the-tale-of-three-spinners.html
   */
   position: relative;
@@ -7996,7 +8002,7 @@ a.pswp__share--download:hover {
   }
 }
 /*
-	
+
 	6. Additional styles
 
  */
@@ -9954,6 +9960,15 @@ body {
   padding-top: 40px;
 }
 
+.features-3 .parkr-container {
+  max-width: 600px;
+  margin: 0 auto;
+}
+.features-3 .parkr-container img {
+  max-width: 100%;
+  padding-top: 40px;
+}
+
 .features-4 .ipad-container {
   max-width: 500px;
   margin: 0 auto 0;
@@ -9961,6 +9976,16 @@ body {
 .features-4 .ipad-container img {
   max-width: 100%;
 }
+
+.features-4 .trubric-container {
+  max-width: 700px;
+  margin: 0 auto 0;
+}
+.features-4 .trubric-container img {
+  max-width: 100%;
+  max-height: 420px;
+}
+
 .features-4 .info-horizontal {
   padding: 50px 0 0px;
 }
