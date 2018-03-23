@@ -2148,7 +2148,7 @@ pre.prettyprint {
   left: -50px;
   top: 0;
   height: 100%;
-  position: absolute;
+  /* position: absolute; */
 }
 .presentation-page .section-components .image-container .table-img,
 .presentation-page .section-components .image-container .share-btn-img,
@@ -2170,7 +2170,7 @@ pre.prettyprint {
   box-shadow: 0 8px 10px 1px rgba(0, 0, 0, 0.14), 0 3px 14px 2px rgba(0, 0, 0, 0.12), 0 5px 5px -3px rgba(0, 0, 0, 0.2);
 }
 .presentation-page .section-components .image-container .table-img {
-  left: 46%;
+  left: 47%;
   top: 58%;
   height: 175px;
   border-radius: 38px;
@@ -2199,7 +2199,7 @@ pre.prettyprint {
   height: 40px;
 }
 .presentation-page .section-components .image-container .pin-btn-img {
-  left: 2%;
+  left: 20%;
   top: -6%;
   height: 70px;
   /* border-radius: 10px; */

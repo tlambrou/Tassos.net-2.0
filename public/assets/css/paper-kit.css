@@ -7246,7 +7246,7 @@ video {
 }
 @media (max-width: 1367px) and (min-width: 1024px) {
   .presentation-page .section-components .basic-container {
-    margin-left: 5em;
+    /* margin-left: 5em; */
   }
 }
 @media (max-width: 500px) {
