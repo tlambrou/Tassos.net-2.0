@@ -54,6 +54,9 @@ $(document).ready(function() {
 })
 
 window.onload = () => {
+
+  $('#lineDrawing').show()
+
   var lineDrawing = anime({
     targets: '#lineDrawing .lines path',
     strokeDashoffset: [anime.setDashoffset, 0],

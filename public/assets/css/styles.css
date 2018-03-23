@@ -3,6 +3,14 @@ html {
   overflow-x: hidden;
 }
 
+body {
+  background-color: #041929;
+}
+
+#lineDrawing {
+  display: none;
+}
+
 #title {
   -webkit-animation-duration: 4s;
   -webkit-animation-delay: 2s;
