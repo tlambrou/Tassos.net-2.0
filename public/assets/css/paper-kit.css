@@ -11,6 +11,12 @@
  * ========================================================= */
 /*      light colors - used for select dropdown         */
 /*           Font Smoothing      */
+
+html {
+  width: 100%;
+  overflow-x: hidden;
+}
+
 h1, .h1, h2, .h2, h3, .h3, h4, .h4, h5, .h5, h6, .h6, p, .navbar, .brand, a, .td-name, td, button, input, select, textarea {
   -moz-osx-font-smoothing: grayscale;
   -webkit-font-smoothing: antialiased;
