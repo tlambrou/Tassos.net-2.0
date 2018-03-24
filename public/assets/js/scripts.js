@@ -94,6 +94,7 @@ window.onload = () => {
     },
   });
 
+  $('#subtitle').show()
   // $('#title').animateCss('fadeInDown');
   $('#subtitle').animateCss('flipInX');
 }
