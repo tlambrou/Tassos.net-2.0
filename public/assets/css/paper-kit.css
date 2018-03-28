@@ -4900,6 +4900,7 @@ select.selectpicker {
 video {
   position: absolute;
   width: 100%;
+  object-fit: fill
 }
 
 @media all and (-ms-high-contrast: none), (-ms-high-contrast: active) {
