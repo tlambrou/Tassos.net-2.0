@@ -4900,7 +4900,8 @@ select.selectpicker {
 video {
   position: absolute;
   width: 100%;
-  object-fit: fill
+  height: 100%;
+  object-fit: fill;
 }
 
 @media all and (-ms-high-contrast: none), (-ms-high-contrast: active) {
@@ -6749,6 +6750,23 @@ video {
   .presentation-page .section-components .first-card .grid__link {
     max-width: 200px !important;
   }
+  .presentation-page .section-cards .second-card,
+  .presentation-page .section-components .second-card {
+    top: 400px !important;
+  }
+  .presentation-page .section-cards .second-card .grid__link,
+  .presentation-page .section-components .second-card .grid__link {
+    max-width: 200px !important;
+  }
+  .presentation-page .section-cards .third-card,
+  .presentation-page .section-components .third-card {
+    top: 1000px !important;
+    left: 440px !important;
+  }
+  .presentation-page .section-cards .third-card .grid__link,
+  .presentation-page .section-components .third-card .grid__link {
+    max-width: 200px !important;
+  }
   .presentation-page .section-cards .fourth-card,
   .presentation-page .section-components .fourth-card {
     top: 940px !important;
@@ -6781,6 +6799,24 @@ video {
   }
   .presentation-page .section-cards .seventh-card .grid__link,
   .presentation-page .section-components .seventh-card .grid__link {
+    max-width: 200px !important;
+  }
+  .presentation-page .section-cards .eight-card,
+  .presentation-page .section-components .eight-card {
+    top: 660px !important;
+    left: 220px !important;
+  }
+  .presentation-page .section-cards .eight-card .grid__link,
+  .presentation-page .section-components .eight-card .grid__link {
+    max-width: 200px !important;
+  }
+  .presentation-page .section-cards .ninth-card,
+  .presentation-page .section-components .ninth-card {
+    top: 440px !important;
+    left: 440px !important;
+  }
+  .presentation-page .section-cards .ninth-card .grid__link,
+  .presentation-page .section-components .ninth-card .grid__link {
     max-width: 200px !important;
   }
   .presentation-page .section-content .image-container .add-animation {
@@ -7284,7 +7320,7 @@ video {
 @media screen and (max-width: 1367px) {
   .presentation-page .section-cards,
   .presentation-page .section-components {
-    overflow: hidden;
+    overflow: visible;
   }
 }
 @media screen and (min-width: 1025) {
