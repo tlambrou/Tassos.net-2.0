@@ -7083,8 +7083,9 @@ video {
   }
 
   .header-4 video {
-    width: auto;
-    height: 100vh;
+    width: 100%;
+    height: 100%;
+    object-fit: fill;
   }
 }
 @media screen and (min-width: 991px) {
