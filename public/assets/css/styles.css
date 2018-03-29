@@ -20,8 +20,9 @@ body {
 
 #subtitle {
   -webkit-animation-duration: 2s;
-  -webkit-animation-delay: 6s;
+  -webkit-animation-delay: 1s;
   -moz-animation-duration: 2s;
-  -moz-animation-delay: 6s;
+  -moz-animation-delay: 1s;
   color: hsla(360, 100%, 100%, 0);
+  display: none;
 }

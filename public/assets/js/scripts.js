@@ -175,12 +175,15 @@ window.onload = () => {
       return this;
     },
   });
-  $('#subtitle').css('color', 'hsla(360, 100%, 100%, 0.84)');
-  $('#subtitle').animateCss('flipInX');
+
 
   // $('#title').animateCss('fadeInDown');
 
   function animateSubtitle() {
+    $('#subtitle').show()
+    $('#subtitle').css('display', 'inline-block');
+    $('#subtitle').css('color', 'hsla(360, 100%, 100%, 0.84)');
+    $('#subtitle').animateCss('flipInX');
     // $('#title').animateCss('fadeInDown');
     // $('#subtitle').text('Full Stack Web Developer');
   }
