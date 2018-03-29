@@ -11,5 +11,7 @@
 - Project Mockup designed image assets
 - Testimonials
 
+## Quickstart
+From the terminal, navigate to the project folder and run `npm start`
 
 
