@@ -65,7 +65,7 @@ window.onload = () => {
     strokeDashoffset: [anime.setDashoffset, 0],
     // easing: [.91,-0.54,.29,1.56],
     easing: 'easeInQuad',
-    duration: 4000,
+    duration: 3000,
     delay: function(el, i) { return (getRandomInt(1, 12) * 300) },
     direction: 'alternate',
     loop: false,
@@ -86,9 +86,11 @@ window.onload = () => {
     delay: function(el, i) { return (getRandomInt(1, 12) * 300) },
     easing: 'easeInBack',
     direction: 'alternate',
-    duration: 4000,
+    duration: 3000,
     loop: false,
   });
+
+  var promise = lineDrawing.finished.then(animateSubtitle);
 
   // var basicTimeline = anime.timeline();
   //
@@ -173,8 +175,13 @@ window.onload = () => {
       return this;
     },
   });
-
-  $('#subtitle').show()
-  // $('#title').animateCss('fadeInDown');
+  $('#subtitle').css('color', 'hsla(360, 100%, 100%, 0.84)');
   $('#subtitle').animateCss('flipInX');
+
+  // $('#title').animateCss('fadeInDown');
+
+  function animateSubtitle() {
+    // $('#title').animateCss('fadeInDown');
+    // $('#subtitle').text('Full Stack Web Developer');
+  }
 }
