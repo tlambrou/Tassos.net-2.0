@@ -65,7 +65,7 @@ window.onload = () => {
     strokeDashoffset: [anime.setDashoffset, 0],
     // easing: [.91,-0.54,.29,1.56],
     easing: 'easeInQuad',
-    duration: 3000,
+    duration: 3200,
     delay: function(el, i) { return (getRandomInt(1, 12) * 300) },
     direction: 'alternate',
     loop: false,
