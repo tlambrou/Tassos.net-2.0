@@ -1,3 +1,6 @@
+function getRandomInt(min, max) {
+    return Math.floor(Math.random() * (max - min + 1)) + min
+}
 
 $(document).ready(function() {
 
@@ -60,12 +63,89 @@ window.onload = () => {
   var lineDrawing = anime({
     targets: '#lineDrawing .lines path',
     strokeDashoffset: [anime.setDashoffset, 0],
-    easing: 'easeInBack',
-    duration: 800,
-    delay: function(el, i) { return i * 200 },
+    // easing: [.91,-0.54,.29,1.56],
+    easing: 'easeInQuad',
+    duration: 4000,
+    delay: function(el, i) { return (getRandomInt(1, 12) * 300) },
     direction: 'alternate',
-    loop: false
+    loop: false,
   });
+
+  var colors = anime({
+    targets: '#lineDrawing .lines path',
+    stroke: [
+      {value: '#08F0FF'},
+      {value: '#00FF87'},
+      {value: '#EBFF00'},
+      {value: '#FF0072'},
+      {value: '#8409FF'},
+      {value: '#08F0FF'},
+      {value: '#00FF87'},
+      {value: '#B4FFEA'},
+    ],
+    delay: function(el, i) { return (getRandomInt(1, 12) * 300) },
+    easing: 'easeInBack',
+    direction: 'alternate',
+    duration: 4000,
+    loop: false,
+  });
+
+  // var basicTimeline = anime.timeline();
+  //
+  // basicTimeline
+  //   .add({
+  //     targets: '#lineDrawing .lines path',
+  //     stroke: [
+  //       {value: '#08F0FF'},
+  //       {value: '#00FF87'},
+  //       {value: '#EBFF00'},
+  //       {value: '#E90052'},
+  //       {value: '#8360C8'},
+  //       {value: '#08F0FF'},
+  //     ],
+  //     delay: function(el, i) { return (getRandomInt(1, 12) * 240) },
+  //     easing: 'easeInBack',
+  //     direction: 'reverse',
+  //     duration: 6000,
+  //     loop: true,
+  //   })
+  //   .add({
+  //     targets: '#lineDrawing .lines path',
+  //     stroke: [
+  //       {value: '#B4FFEA'},
+  //       {value: '#B4FFEA'},
+  //       {value: '#B4FFEA'},
+  //       // {value: 'rgba(138, 196, 180, 0.6)'},
+  //       {value: '#08F0FF'},
+  //       {value: '#B4FFEA'},
+  //       {value: '#B4FFEA'},
+  //       {value: '#B4FFEA'},
+  //     ],
+  //     easing: 'linear',
+  //     direction: 'alternate',
+  //     duration: 6000,
+  //   });
+
+
+  //
+  // var pulse = anime({
+  //   targets: '#lineDrawing .lines path',
+  //   stroke: [
+  //     {value: '#B4FFEA'},
+  //     {value: '#B4FFEA'},
+  //     {value: '#B4FFEA'},
+  //     {value: 'rgba(138, 196, 180, 0.6)'},
+  //     {value: '#B4FFEA'},
+  //     {value: '#B4FFEA'},
+  //     {value: '#B4FFEA'},
+  //   ],
+  //   easing: 'linear',
+  //   direction: 'reverse',
+  //   duration: 6000,
+  //   delay: 6001,
+  //   loop: true,
+  // });
+
 
   $.fn.extend({
     animateCss: function(animationName, callback) {
