@@ -52,8 +52,8 @@
 
 </head>
 <body class="presentation-page off-canvas-menu loading">
-
-	<div class="cd-section">
+<a data-scroll href="#top"></a>
+	<div id="top" class="cd-section">
 		<div class="header-4">
 			<div class="header-wrapper">
 				<!-- <div class="page-header section-dark" style="background-image: url('https://i.imgur.com/FhfScrc.mp4')"> -->
@@ -145,7 +145,7 @@
 						</div>
 						<div class="col-md-7 ml-auto mr-auto profile-summary reveal">
 							<h2 class="title">Hello!!</h2>
-							<h5 class="description">I'm Tassos <small>(the one on the right)</small>. I'm a passionate software developer in San Francisco, eager to unleash the power of code to solving real problems. I have a background in full stack web and iOS development, working on many projects including PARKR and Trubric.</h5>
+							<h5 class="description">I'm Tassos <small>(the one on the right)</small>. I'm a passionate software developer in San Francisco, eager to unleash the power of code to solving real problems. I have a background in full stack web and iOS development, working on many projects including PARKR and Broaden.io.</h5>
 							<h6 class="category">CORE TECHNOLOGIES:</h6>
 							<p class="text-primary"><strong>Languages</strong> - JavaScript, Swift, Python, Ruby, PHP</p>
 							<p class="text-success"><strong>Frontend</strong> - React.js, Redux, React-Native, Handlebars.js, Bootstrap, Ionic</p>
@@ -172,9 +172,10 @@
 				</div>
 			</div>
 			<!-- Profile - End -->
+			<a data-scroll href="#products"></a>
 
 			<!-- My Products - Start -->
-			<div class="section section-cards section-dark">
+			<div id="products" class="section section-cards section-dark">
 				<div class="codrops-header">
 					<div class="row">
 						<div class="col-md-6 col-lg-4 reveal">
@@ -214,17 +215,17 @@
 								</a>
 							</li>
 							<li class="grid__item sixth-card">
-								<a class="grid__link" href="index.html#trubric">
+								<a class="grid__link" href="index.html#broaden">
 									<img class="grid__img layer" src="assets/img/showcase/trubric-assessment-desktop-card.jpg" alt="06" />
 								</a>
 							</li>
 							<li class="grid__item seventh-card">
-								<a class="grid__link" href="index.html#trubric">
+								<a class="grid__link" href="index.html#broaden">
 									<img class="grid__img layer" src="assets/img/showcase/trubric-dashboard-mobile-card.jpg" alt="07" />
 								</a>
 							</li>
 							<li class="grid__item eight-card">
-								<a class="grid__link" href="index.html#trubric">
+								<a class="grid__link" href="index.html#broaden">
 									<img class="grid__img layer" src="assets/img/showcase/trubric-login-mobile-card.jpg" alt="08" />
 								</a>
 							</li>
@@ -238,9 +239,10 @@
 				</section>
 			</div>
 			<!-- My Products - End -->
+			<a data-scroll href="#broaden"></a>
 
-			<!-- Trubric - Start -->
-			<div id="trubric" class="features-4 section section-dark">
+			<!-- broaden - Start -->
+			<div id="broaden" class="features-4 section section-dark">
 				<div class="container">
 					<div class="row">
 						<div class="col-md-8 ml-auto mr-auto text-center reveal">
@@ -294,7 +296,9 @@
 					</div>
 				</div>
 			</div>
-			<!-- Trubric - End -->
+			<!-- broaden - End -->
+
+			<a data-scroll href="#parkr"></a>
 
 			<!-- PARKR - Start -->
 			<div id="parkr" class="section section-components section-gray">
@@ -355,6 +359,7 @@
 				</div>
 			</div>
 			<!-- PARKR - End -->
+			<a data-scroll href="#mc"></a>
 
 			<!-- MissionConsultants - Start -->
 			<div id="mc" class="features-4 section section-dark">
@@ -410,6 +415,8 @@
 			</div>
 			<!-- MissionConsultants - End -->
 
+			<a data-scroll href="#omnivox"></a>
+
 			<!-- OmniVox - Start -->
 			<div id="omnivox" class="features-4 section section-gold">
 				<div class="container">
@@ -461,6 +468,8 @@
 			</div>
 			<!-- OmniVox - End -->
 
+			<a data-scroll href="#bloctorials"></a>
+
 			<!-- Bloctorials - Start -->
 			<div id="bloctorials" class="features-4 section section-dark">
 				<div class="container">
@@ -510,6 +519,8 @@
 				</div>
 				<!-- Bloctorials - End -->
 
+				<a data-scroll href="#wthr"></a>
+
 				<!-- WTHR - Start -->
 				<div id="wthr" class="features-4 section section-gray">
 					<div class="container">
@@ -551,6 +562,7 @@
 						</div>
 					</div>
 					<!-- WTHR - End -->
+					<a data-scroll href="#lilbro"></a>
 
 					<!-- Little Brother - Start  -->
 					<div id="lilbro" class="section section-responsive section-gold">
@@ -632,8 +644,9 @@
 </div>
 </div>
 </div> -->
+<a data-scroll href="#testimonials"></a>
 
-<div class="section section-testimonials">
+<div id="testimonials" class="section section-testimonials">
 	<div class="container-fluid">
 		<div class="row">
 			<div class="col-md-8 ml-auto mr-auto text-center">
@@ -799,6 +812,9 @@
 <script src="assets/js/typed.js" type="text/javascript"></script>
 <script src="assets/js/scripts.js" type="text/javascript"></script>
 
+<!-- scroll -->
+<script src="dist/js/smooth-scroll.js"></script>
+
 
 <!--  Plugins for presentation page -->
 <script src="assets/js/presentation-page/main.js"></script>
@@ -833,7 +849,35 @@
 })();
 </script>
 <script src="https://unpkg.com/scrollreveal/dist/scrollreveal.min.js"></script>
+
+<script>
+var scroll = new SmoothScroll('a[href*="#"]', {
+	// Selectors
+	ignore: '[data-scroll-ignore]', // Selector for links to ignore (must be a valid CSS selector)
+	header: null, // Selector for fixed headers (must be a valid CSS selector)
+
+	// Speed & Easing
+	speed: 500, // Integer. How fast to complete the scroll in milliseconds
+	offset: 0, // Integer or Function returning an integer. How far to offset the scrolling anchor location in pixels
+	easing: 'easeInOutCubic', // Easing pattern to use
+	customEasing: function (time) {
+
+		// Function. Custom easing pattern
+		// If this is set to anything other than null, will override the easing option above
+
+		// return <your formulate with time as a multiplier>
+
+		// Example: easeInOut Quad
+		return time < 0.5 ? 2 * time * time : -1 + (4 - 2 * time) * time;
+
+	},
+
+	// Callback API
+	before: function (anchor, toggle) {}, // Callback to run before scroll
+	after: function (anchor, toggle) {} // Callback to run after scroll
+});</script>
 </body>
+
 
 
 </html>

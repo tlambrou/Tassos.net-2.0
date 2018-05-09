@@ -68,7 +68,7 @@ window.onload = () => {
     duration: 3200,
     delay: function(el, i) { return (getRandomInt(1, 12) * 300) },
     direction: 'alternate',
-    loop: false,
+    loop: true,
   });
 
   var colors = anime({
@@ -87,7 +87,7 @@ window.onload = () => {
     easing: 'easeInBack',
     direction: 'alternate',
     duration: 3000,
-    loop: false,
+    loop: true,
   });
 
   var promise = lineDrawing.finished.then(animateSubtitle);
