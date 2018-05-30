@@ -68,7 +68,7 @@ window.onload = () => {
     duration: 3200,
     delay: function(el, i) { return (getRandomInt(1, 12) * 300) },
     direction: 'alternate',
-    loop: true,
+    loop: false,
   });
 
   var colors = anime({
