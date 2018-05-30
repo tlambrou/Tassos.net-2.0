@@ -87,7 +87,7 @@ window.onload = () => {
     easing: 'easeInBack',
     direction: 'alternate',
     duration: 3000,
-    loop: true,
+    loop: false,
   });
 
   var promise = lineDrawing.finished.then(animateSubtitle);
