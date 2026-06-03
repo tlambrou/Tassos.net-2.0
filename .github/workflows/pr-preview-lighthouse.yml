@@ -37,9 +37,10 @@ jobs:
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
           VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
           VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+          VERCEL_AUTOMATION_BYPASS_SECRET: ${{ secrets.VERCEL_AUTOMATION_BYPASS_SECRET }}
         run: |
           missing=0
-          for name in VERCEL_TOKEN VERCEL_ORG_ID VERCEL_PROJECT_ID; do
+          for name in VERCEL_TOKEN VERCEL_ORG_ID VERCEL_PROJECT_ID VERCEL_AUTOMATION_BYPASS_SECRET; do
             if [ -z "${!name}" ]; then
               echo "::error::Missing required repository secret: $name"
               missing=1
@@ -85,22 +86,33 @@ jobs:
           echo "Preview URL: $preview_url"
 
       - name: Smoke test preview URL
-        run: curl --fail --show-error --silent --location --head "${{ steps.deploy.outputs.preview_url }}"
+        env:
+          VERCEL_AUTOMATION_BYPASS_SECRET: ${{ secrets.VERCEL_AUTOMATION_BYPASS_SECRET }}
+        run: |
+          curl --fail --show-error --silent --location --head \
+            --header "x-vercel-protection-bypass: $VERCEL_AUTOMATION_BYPASS_SECRET" \
+            "${{ steps.deploy.outputs.preview_url }}"
 
       - name: Run Lighthouse mobile
+        env:
+          VERCEL_AUTOMATION_BYPASS_SECRET: ${{ secrets.VERCEL_AUTOMATION_BYPASS_SECRET }}
         run: |
           npx lighthouse@12.8.2 "${{ steps.deploy.outputs.preview_url }}" \
             --quiet \
             --chrome-flags="--headless=new --no-sandbox" \
+            --extra-headers "{\"x-vercel-protection-bypass\":\"$VERCEL_AUTOMATION_BYPASS_SECRET\"}" \
             --output=json \
             --output-path=./lighthouse-mobile.json
 
       - name: Run Lighthouse desktop
+        env:
+          VERCEL_AUTOMATION_BYPASS_SECRET: ${{ secrets.VERCEL_AUTOMATION_BYPASS_SECRET }}
         run: |
           npx lighthouse@12.8.2 "${{ steps.deploy.outputs.preview_url }}" \
             --quiet \
             --preset=desktop \
             --chrome-flags="--headless=new --no-sandbox" \
+            --extra-headers "{\"x-vercel-protection-bypass\":\"$VERCEL_AUTOMATION_BYPASS_SECRET\"}" \
             --output=json \
             --output-path=./lighthouse-desktop.json
 
