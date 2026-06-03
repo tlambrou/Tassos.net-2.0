@@ -41,6 +41,25 @@ for (const href of [
 }
 
 assert(
-  /<script src="assets\/js\/typed\.min\.js" type="text\/javascript"><\/script>/.test(html),
-  "The page should load the minified Typed.js bundle"
+  !/<script src="assets\/js\/typed(\.min)?\.js"/.test(html),
+  "The page should not load Typed.js when no Typed instance is used"
 );
+
+assert(
+  !/fonts\.googleapis\.com|fonts\.gstatic\.com/.test(html),
+  "Homepage should not request external web fonts on the critical path"
+);
+
+for (const href of [
+  "https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css",
+  "assets/css/nucleo-icons.css",
+]) {
+  const deferredCssPattern = new RegExp(
+    `<link href="${href.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}" rel="stylesheet" media="print" onload="this.media='all'"`
+  );
+
+  assert(
+    deferredCssPattern.test(html),
+    `${href} should be deferred so font/icon CSS does not block first paint`
+  );
+}

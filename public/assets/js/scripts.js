@@ -12,6 +12,33 @@ window.runAfterIdle = window.runAfterIdle || function(callback, timeout) {
   setTimeout(callback, 0);
 };
 
+function hydrateHeroVideo() {
+  var video = document.getElementById('video-source');
+  var isSmallScreen = window.matchMedia && window.matchMedia('(max-width: 767px)').matches;
+
+  if (!video || prefersReducedMotion || isSmallScreen) {
+    if (video) {
+      video.pause();
+      video.removeAttribute('autoplay');
+      video.setAttribute('preload', 'none');
+    }
+    return;
+  }
+
+  if (!video.querySelector('source') && video.getAttribute('data-src')) {
+    var source = document.createElement('source');
+    source.src = video.getAttribute('data-src');
+    source.type = 'video/mp4';
+    video.appendChild(source);
+    video.load();
+  }
+
+  var play = video.play();
+  if (play && typeof play.catch === 'function') {
+    play.catch(function() {});
+  }
+}
+
 $(document).ready(function() {
 
   const scrollReveal = () => {// Select all links with hashes
@@ -79,6 +106,7 @@ window.onload = () => {
     video.removeAttribute('autoplay');
     video.setAttribute('preload', 'none');
   }
+  window.runAfterIdle(hydrateHeroVideo, 2500);
 
   // var basicTimeline = anime.timeline();
   //

@@ -8,7 +8,74 @@ body {
 }
 
 #lineDrawing {
-  display: none;
+  display: block;
+  min-height: clamp(160px, 23vw, 309px);
+}
+
+#lineDrawing svg {
+  aspect-ratio: 350 / 139;
+  box-sizing: content-box;
+  display: block;
+  height: auto !important;
+  margin: 0 auto;
+  max-width: 730px;
+}
+
+.hero-fallback-image {
+  background-image: url("../img/nightmountains.jpg");
+  background-image: image-set(
+    url("../img/nightmountains.webp") type("image/webp"),
+    url("../img/nightmountains.jpg") type("image/jpeg")
+  );
+}
+
+.presentation-page .title-brand {
+  color: #ffffff;
+  display: block;
+  margin: 0 auto;
+  max-width: 730px;
+  position: relative;
+  text-align: center;
+}
+
+.presentation-page .presentation-subtitle {
+  color: #ffffff;
+  font-size: 1.7em;
+}
+
+.presentation-page .category-absolute {
+  color: rgba(255, 255, 255, 0.5);
+  margin-top: -60px;
+  padding: 0 15px;
+  position: absolute;
+  text-align: center;
+  top: 100vh;
+  width: 100%;
+}
+
+@media (max-width: 1200px) {
+  .presentation-page .title-brand {
+    max-width: 650px;
+  }
+}
+
+@media (max-width: 767px) {
+  .presentation-page .title-brand {
+    max-width: 450px;
+  }
+
+  .presentation-page .presentation-subtitle {
+    margin-top: 40px;
+  }
+}
+
+.scroll-cue {
+  border-bottom: 2px solid currentColor;
+  border-right: 2px solid currentColor;
+  display: inline-block;
+  height: 24px;
+  transform: rotate(45deg);
+  width: 24px;
 }
 
 #title {
@@ -23,8 +90,8 @@ body {
   -webkit-animation-delay: 1s;
   -moz-animation-duration: 2s;
   -moz-animation-delay: 1s;
-  color: hsla(360, 100%, 100%, 0);
-  display: none;
+  color: hsla(360, 100%, 100%, 0.84);
+  display: inline-block;
 }
 
 @media (prefers-reduced-motion: reduce) {

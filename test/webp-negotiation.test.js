@@ -4,9 +4,20 @@ const http = require("http");
 const path = require("path");
 
 const publicDir = path.join(__dirname, "..", "public");
+const indexPath = path.join(publicDir, "index.html");
+const indexHtml = fs.readFileSync(indexPath, "utf8");
 const expectedWebpAssets = [
   "assets/img/nightmountains.webp",
   "assets/img/faces/billandi.webp",
+  "assets/img/showcase/omnivox-title-desktop-card.webp",
+  "assets/img/showcase/wthr-card.webp",
+  "assets/img/showcase/littlebrother-measure-mobile-card.webp",
+  "assets/img/showcase/mc-search-desktop-card.webp",
+  "assets/img/showcase/parkr-timer-mobile-card.webp",
+  "assets/img/showcase/trubric-assessment-desktop-card.webp",
+  "assets/img/showcase/trubric-dashboard-mobile-card.webp",
+  "assets/img/showcase/trubric-login-mobile-card.webp",
+  "assets/img/showcase/bloctorials-title-mobile-card.webp",
   "assets/img/mockups/littlebrother-mockup.webp",
   "assets/img/mockups/mc-devices-mockup.webp",
   "assets/img/mockups/omnivox-mockup.webp",
@@ -20,7 +31,23 @@ for (const asset of expectedWebpAssets) {
     fs.existsSync(path.join(publicDir, asset)),
     `${asset} should exist as a modern image-format alternative`
   );
+
+  assert(
+    indexHtml.includes(asset),
+    `${asset} should be referenced by static production markup`
+  );
 }
+
+assert(
+  /<link rel="preload" as="image" href="assets\/img\/nightmountains\.webp"[^>]+fetchpriority="high">/.test(indexHtml),
+  "Hero WebP poster should be preloaded for first paint"
+);
+
+assert(
+  /<video[^>]+id="video-source"[^>]+preload="none"[^>]+data-src="assets\/video\/nightmountains\.mp4"[^>]*>/.test(indexHtml) &&
+    !/<video[^>]+id="video-source"[\s\S]*?<source src="assets\/video\/nightmountains\.mp4"/.test(indexHtml),
+  "Hero video should not include an eager MP4 source in initial HTML"
+);
 
 const { app } = require("../app");
 
