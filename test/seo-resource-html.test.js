@@ -46,6 +46,21 @@ assert(
 );
 
 assert(
+  !/<script src="assets\/js\/presentation-page\/main\.js"><\/script>/.test(html),
+  "The isometric grid bundle should not be loaded on the initial mobile path"
+);
+
+assert(
+  /loadScriptOnce\('assets\/js\/presentation-page\/main\.js'/.test(html),
+  "The isometric grid bundle should be loaded conditionally for large screens"
+);
+
+assert(
+  !/<script src="https:\/\/unpkg\.com\/scrollreveal\/dist\/scrollreveal\.min\.js"><\/script>/.test(html),
+  "ScrollReveal should not be loaded unconditionally"
+);
+
+assert(
   !/fonts\.googleapis\.com|fonts\.gstatic\.com/.test(html),
   "Homepage should not request external web fonts on the critical path"
 );

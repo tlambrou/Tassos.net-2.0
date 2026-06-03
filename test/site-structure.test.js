@@ -70,6 +70,11 @@ assert(
   "Homepage scripts should hydrate the hero video lazily"
 );
 
+assert(
+  /window\.loadScriptOnce/.test(fs.readFileSync(path.join(__dirname, "..", "public", "assets", "js", "scripts.js"), "utf8")),
+  "Optional interaction bundles should be loaded on demand"
+);
+
 assert.deepStrictEqual(
   vercelConfig.builds,
   [{ src: "public/**", use: "@vercel/static" }],

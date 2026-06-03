@@ -4,6 +4,9 @@ function getRandomInt(min, max) {
 
 const prefersReducedMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 window.__reduceMotion = prefersReducedMotion === true;
+window.isSmallScreen = window.isSmallScreen || function() {
+  return window.matchMedia && window.matchMedia('(max-width: 767px)').matches;
+};
 window.runAfterIdle = window.runAfterIdle || function(callback, timeout) {
   if ('requestIdleCallback' in window) {
     requestIdleCallback(callback, { timeout: timeout || 1500 });
@@ -11,12 +14,30 @@ window.runAfterIdle = window.runAfterIdle || function(callback, timeout) {
   }
   setTimeout(callback, 0);
 };
+window.loadScriptOnce = window.loadScriptOnce || function(src, callback) {
+  var existing = document.querySelector('script[src="' + src + '"]');
+  if (existing) {
+    existing.addEventListener('load', function() {
+      if (callback) callback();
+    }, { once: true });
+    if (existing.dataset.loaded === 'true' && callback) callback();
+    return;
+  }
+
+  var script = document.createElement('script');
+  script.src = src;
+  script.async = true;
+  script.onload = function() {
+    script.dataset.loaded = 'true';
+    if (callback) callback();
+  };
+  document.body.appendChild(script);
+};
 
 function hydrateHeroVideo() {
   var video = document.getElementById('video-source');
-  var isSmallScreen = window.matchMedia && window.matchMedia('(max-width: 767px)').matches;
 
-  if (!video || prefersReducedMotion || isSmallScreen) {
+  if (!video || prefersReducedMotion || window.isSmallScreen()) {
     if (video) {
       video.pause();
       video.removeAttribute('autoplay');
@@ -80,12 +101,17 @@ $(document).ready(function() {
       });
     }
 
-    if (!prefersReducedMotion && window.ScrollReveal) {
-      window.sr = ScrollReveal();
-      // sr.reveal('.card');
-      sr.reveal('.profile-summary');
-      // sr.reveal('.grid');
-      sr.reveal('.reveal');
+    if (!prefersReducedMotion && !window.isSmallScreen()) {
+      window.runAfterIdle(function() {
+        window.loadScriptOnce('https://unpkg.com/scrollreveal@4.0.9/dist/scrollreveal.min.js', function() {
+          if (!window.ScrollReveal) return;
+          window.sr = ScrollReveal();
+          // sr.reveal('.card');
+          sr.reveal('.profile-summary');
+          // sr.reveal('.grid');
+          sr.reveal('.reveal');
+        });
+      }, 2000);
     }
   }
 

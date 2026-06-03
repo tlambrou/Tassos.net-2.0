@@ -857,9 +857,6 @@
 <script src="assets/js/anime.min.js"></script>
 <script src="assets/js/scripts.js" type="text/javascript"></script>
 
-<!--  Plugins for presentation page -->
-<script src="assets/js/presentation-page/main.js"></script>
-
 <script async defer src="https://buttons.github.io/buttons.js"></script>
 
 <script type="text/javascript">
@@ -870,38 +867,48 @@
 
 	var prefersReducedMotion = window.__reduceMotion === true;
 	var isLargeScreen = window.matchMedia ? window.matchMedia('(min-width: 768px)').matches : true;
-	var canInitIso = !prefersReducedMotion && isLargeScreen && window.IsoGrid && document.querySelector('.isolayer--deco1');
+	var canInitIso = !prefersReducedMotion && isLargeScreen && document.querySelector('.isolayer--deco1');
 
 	if (!canInitIso) {
 		return;
 	}
 
 	var runAfterIdle = window.runAfterIdle || function(callback) { setTimeout(callback, 0); };
+	var loadScriptOnce = window.loadScriptOnce || function(src, callback) {
+		var script = document.createElement('script');
+		script.src = src;
+		script.async = true;
+		script.onload = callback;
+		document.body.appendChild(script);
+	};
 
 	runAfterIdle(function() {
-		new IsoGrid(document.querySelector('.isolayer--deco1'), {
-			transform : 'translateX(33vw) translateY(-340px) rotateX(45deg) rotateZ(45deg)',
-			stackItemsAnimation : {
-				properties : function(pos) {
-					return {
-						translateZ: (pos+1) * 30,
-						rotateZ: getRandomInt(-4, 4)
-					};
-				},
-				options : function(pos, itemstotal) {
-					return {
-						type: dynamics.bezier,
-						duration: 500,
-						points: [{"x":0,"y":0,"cp":[{"x":0.2,"y":1}]},{"x":1,"y":1,"cp":[{"x":0.3,"y":1}]}],
-						delay: (itemstotal-pos-1)*40
-					};
+		loadScriptOnce('assets/js/presentation-page/main.js', function() {
+			if (!window.IsoGrid || !window.dynamics) return;
+
+			new IsoGrid(document.querySelector('.isolayer--deco1'), {
+				transform : 'translateX(33vw) translateY(-340px) rotateX(45deg) rotateZ(45deg)',
+				stackItemsAnimation : {
+					properties : function(pos) {
+						return {
+							translateZ: (pos+1) * 30,
+							rotateZ: getRandomInt(-4, 4)
+						};
+					},
+					options : function(pos, itemstotal) {
+						return {
+							type: dynamics.bezier,
+							duration: 500,
+							points: [{"x":0,"y":0,"cp":[{"x":0.2,"y":1}]},{"x":1,"y":1,"cp":[{"x":0.3,"y":1}]}],
+							delay: (itemstotal-pos-1)*40
+						};
+					}
 				}
-			}
+			});
 		});
 	}, 2000);
 })();
 </script>
-<script src="https://unpkg.com/scrollreveal/dist/scrollreveal.min.js"></script>
 
 </body>
 
