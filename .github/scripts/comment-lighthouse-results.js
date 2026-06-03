@@ -99,6 +99,10 @@ async function main() {
 
 These scores are regenerated for each PR commit by the \`PR Preview and Lighthouse\` workflow.`;
 
+  if (process.env.GITHUB_STEP_SUMMARY) {
+    fs.appendFileSync(process.env.GITHUB_STEP_SUMMARY, `${body.replace(`${marker}\n`, "")}\n`);
+  }
+
   const comments = await githubRequest(
     `/repos/${owner}/${repo}/issues/${process.env.PR_NUMBER}/comments?per_page=100`
   );
@@ -118,6 +122,11 @@ These scores are regenerated for each PR commit by the \`PR Preview and Lighthou
 }
 
 main().catch((error) => {
+  if (error.message.includes("Resource not accessible by integration")) {
+    console.warn(`Unable to update PR comment; Lighthouse scores are available in the job summary.`);
+    return;
+  }
+
   console.error(error);
   process.exit(1);
 });
