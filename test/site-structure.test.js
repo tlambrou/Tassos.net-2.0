@@ -75,6 +75,11 @@ assert(
   "Optional interaction bundles should be loaded on demand"
 );
 
+assert(
+  /loadScriptOnce\('assets\/js\/anime\.min\.js'/.test(fs.readFileSync(path.join(__dirname, "..", "public", "assets", "js", "scripts.js"), "utf8")),
+  "Logo animation code should load Anime.js only when animation can run"
+);
+
 assert.deepStrictEqual(
   vercelConfig.builds,
   [{ src: "public/**", use: "@vercel/static" }],

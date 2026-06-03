@@ -60,6 +60,17 @@ assert(
   "ScrollReveal should not be loaded unconditionally"
 );
 
+for (const script of [
+  "assets/js/jquery-ui-1.12.1.custom.min.js",
+  "assets/js/demo.js",
+  "assets/js/anime.min.js",
+]) {
+  assert(
+    !html.includes(`<script src="${script}`),
+    `${script} should not be loaded unconditionally on the initial path`
+  );
+}
+
 assert(
   !/fonts\.googleapis\.com|fonts\.gstatic\.com/.test(html),
   "Homepage should not request external web fonts on the critical path"

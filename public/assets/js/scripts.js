@@ -230,12 +230,18 @@ window.onload = () => {
     // $('#subtitle').text('Full Stack Web Developer');
   }
 
-  if (prefersReducedMotion || !window.anime) {
+  if (prefersReducedMotion || window.isSmallScreen()) {
     animateSubtitle();
     return;
   }
 
   window.runAfterIdle(function() {
+    window.loadScriptOnce('assets/js/anime.min.js', function() {
+      if (!window.anime) {
+        animateSubtitle();
+        return;
+      }
+
     var lineDrawing = anime({
       targets: '#lineDrawing .lines path',
       strokeDashoffset: [anime.setDashoffset, 0],
@@ -267,5 +273,6 @@ window.onload = () => {
     });
 
     lineDrawing.finished.then(animateSubtitle);
+    });
   }, 2000);
 }
