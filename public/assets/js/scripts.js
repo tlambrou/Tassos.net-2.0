@@ -2,50 +2,64 @@ function getRandomInt(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min
 }
 
+const prefersReducedMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+window.__reduceMotion = prefersReducedMotion === true;
+window.runAfterIdle = window.runAfterIdle || function(callback, timeout) {
+  if ('requestIdleCallback' in window) {
+    requestIdleCallback(callback, { timeout: timeout || 1500 });
+    return;
+  }
+  setTimeout(callback, 0);
+};
+
 $(document).ready(function() {
 
   const scrollReveal = () => {// Select all links with hashes
-    $('a[href*="#"]')
-    // Remove links that don't actually link to anything
-    .not('[href="#"]')
-    .not('[href="#0"]')
-    .click(function(event) {
-      // On-page links
-      if (
-        location.pathname.replace(/^\//, '') == this.pathname.replace(/^\//, '')
-        &&
-        location.hostname == this.hostname
-      ) {
-        // Figure out element to scroll to
-        var target = $(this.hash);
-        target = target.length ? target : $('[name=' + this.hash.slice(1) + ']');
-        // Does a scroll target exist?
-        if (target.length) {
-          // Only prevent default if animation is actually gonna happen
-          event.preventDefault();
-          $('html, body').animate({
-            scrollTop: target.offset().top
-          }, 1000, function() {
-            // Callback after animation
-            // Must change focus!
-            var $target = $(target);
-            $target.focus();
-            if ($target.is(":focus")) { // Checking if the target was focused
-              return false;
-            } else {
-              $target.attr('tabindex','-1'); // Adding tabindex for elements not focusable
-              $target.focus(); // Set focus again
-            };
-          });
+    if (!prefersReducedMotion) {
+      $('a[href*="#"]')
+      // Remove links that don't actually link to anything
+      .not('[href="#"]')
+      .not('[href="#0"]')
+      .click(function(event) {
+        // On-page links
+        if (
+          location.pathname.replace(/^\//, '') == this.pathname.replace(/^\//, '')
+          &&
+          location.hostname == this.hostname
+        ) {
+          // Figure out element to scroll to
+          var target = $(this.hash);
+          target = target.length ? target : $('[name=' + this.hash.slice(1) + ']');
+          // Does a scroll target exist?
+          if (target.length) {
+            // Only prevent default if animation is actually gonna happen
+            event.preventDefault();
+            $('html, body').animate({
+              scrollTop: target.offset().top
+            }, 1000, function() {
+              // Callback after animation
+              // Must change focus!
+              var $target = $(target);
+              $target.focus();
+              if ($target.is(":focus")) { // Checking if the target was focused
+                return false;
+              } else {
+                $target.attr('tabindex','-1'); // Adding tabindex for elements not focusable
+                $target.focus(); // Set focus again
+              };
+            });
+          }
         }
-      }
-    });
+      });
+    }
 
-    window.sr = ScrollReveal();
-    // sr.reveal('.card');
-    sr.reveal('.profile-summary');
-    // sr.reveal('.grid');
-    sr.reveal('.reveal');
+    if (!prefersReducedMotion && window.ScrollReveal) {
+      window.sr = ScrollReveal();
+      // sr.reveal('.card');
+      sr.reveal('.profile-summary');
+      // sr.reveal('.grid');
+      sr.reveal('.reveal');
+    }
   }
 
   scrollReveal();
@@ -59,38 +73,12 @@ $(document).ready(function() {
 window.onload = () => {
 
   $('#lineDrawing').show()
-
-  var lineDrawing = anime({
-    targets: '#lineDrawing .lines path',
-    strokeDashoffset: [anime.setDashoffset, 0],
-    // easing: [.91,-0.54,.29,1.56],
-    easing: 'easeInQuad',
-    duration: 3200,
-    delay: function(el, i) { return (getRandomInt(1, 12) * 300) },
-    direction: 'alternate',
-    loop: false,
-  });
-
-  var colors = anime({
-    targets: '#lineDrawing .lines path',
-    stroke: [
-      {value: '#08F0FF'},
-      {value: '#00FF87'},
-      {value: '#EBFF00'},
-      {value: '#FF0072'},
-      {value: '#8409FF'},
-      {value: '#08F0FF'},
-      {value: '#00FF87'},
-      {value: '#B4FFEA'},
-    ],
-    delay: function(el, i) { return (getRandomInt(1, 12) * 300) },
-    easing: 'easeInBack',
-    direction: 'alternate',
-    duration: 3000,
-    loop: false,
-  });
-
-  var promise = lineDrawing.finished.then(animateSubtitle);
+  var video = document.getElementById('video-source');
+  if (video && prefersReducedMotion) {
+    video.pause();
+    video.removeAttribute('autoplay');
+    video.setAttribute('preload', 'none');
+  }
 
   // var basicTimeline = anime.timeline();
   //
@@ -187,4 +175,43 @@ window.onload = () => {
     // $('#title').animateCss('fadeInDown');
     // $('#subtitle').text('Full Stack Web Developer');
   }
+
+  if (prefersReducedMotion || !window.anime) {
+    animateSubtitle();
+    return;
+  }
+
+  window.runAfterIdle(function() {
+    var lineDrawing = anime({
+      targets: '#lineDrawing .lines path',
+      strokeDashoffset: [anime.setDashoffset, 0],
+      // easing: [.91,-0.54,.29,1.56],
+      easing: 'easeInQuad',
+      duration: 3200,
+      delay: function(el, i) { return (getRandomInt(1, 12) * 300) },
+      direction: 'alternate',
+      loop: false,
+    });
+
+    var colors = anime({
+      targets: '#lineDrawing .lines path',
+      stroke: [
+        {value: '#08F0FF'},
+        {value: '#00FF87'},
+        {value: '#EBFF00'},
+        {value: '#FF0072'},
+        {value: '#8409FF'},
+        {value: '#08F0FF'},
+        {value: '#00FF87'},
+        {value: '#B4FFEA'},
+      ],
+      delay: function(el, i) { return (getRandomInt(1, 12) * 300) },
+      easing: 'easeInBack',
+      direction: 'alternate',
+      duration: 3000,
+      loop: false,
+    });
+
+    lineDrawing.finished.then(animateSubtitle);
+  }, 2000);
 }

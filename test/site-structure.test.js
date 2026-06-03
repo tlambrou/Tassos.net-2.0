@@ -11,7 +11,8 @@ const indexHtml = fs.readFileSync(indexPath, "utf8");
 const vercelConfig = JSON.parse(fs.readFileSync(vercelConfigPath, "utf8"));
 
 assert(
-  /express\.static\(['"]public['"]\)/.test(appSource),
+  /const publicRoot = path\.join\(__dirname, ['"]public['"]\);/.test(appSource) &&
+    /express\.static\(publicRoot\)/.test(appSource),
   "Express should serve the public directory"
 );
 
