@@ -26,3 +26,38 @@ body {
   color: hsla(360, 100%, 100%, 0);
   display: none;
 }
+
+@media (prefers-reduced-motion: reduce) {
+  html:focus-within {
+    scroll-behavior: auto !important;
+  }
+
+  *,
+  *::before,
+  *::after {
+    -webkit-animation-duration: 0.001s !important;
+    animation-duration: 0.001s !important;
+    -webkit-animation-delay: 0s !important;
+    animation-delay: 0s !important;
+    -webkit-animation-iteration-count: 1 !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001s !important;
+    transition-delay: 0s !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+.card-description,
+.card-category {
+  color: #5f5f5f;
+}
+
+.btn-success {
+  background-color: #2f8f5b;
+  border-color: #2f8f5b;
+}
+
+.btn-danger {
+  background-color: #c7351f;
+  border-color: #c7351f;
+}
