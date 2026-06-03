@@ -41,6 +41,51 @@ for (const href of [
 }
 
 assert(
-  /<script src="assets\/js\/typed\.min\.js" type="text\/javascript"><\/script>/.test(html),
-  "The page should load the minified Typed.js bundle"
+  !/<script src="assets\/js\/typed(\.min)?\.js"/.test(html),
+  "The page should not load Typed.js when no Typed instance is used"
 );
+
+assert(
+  !/<script src="assets\/js\/presentation-page\/main\.js"><\/script>/.test(html),
+  "The isometric grid bundle should not be loaded on the initial mobile path"
+);
+
+assert(
+  /loadScriptOnce\('assets\/js\/presentation-page\/main\.js'/.test(html),
+  "The isometric grid bundle should be loaded conditionally for large screens"
+);
+
+assert(
+  !/<script src="https:\/\/unpkg\.com\/scrollreveal\/dist\/scrollreveal\.min\.js"><\/script>/.test(html),
+  "ScrollReveal should not be loaded unconditionally"
+);
+
+for (const script of [
+  "assets/js/jquery-ui-1.12.1.custom.min.js",
+  "assets/js/demo.js",
+  "assets/js/anime.min.js",
+]) {
+  assert(
+    !html.includes(`<script src="${script}`),
+    `${script} should not be loaded unconditionally on the initial path`
+  );
+}
+
+assert(
+  !/fonts\.googleapis\.com|fonts\.gstatic\.com/.test(html),
+  "Homepage should not request external web fonts on the critical path"
+);
+
+for (const href of [
+  "https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css",
+  "assets/css/nucleo-icons.css",
+]) {
+  const deferredCssPattern = new RegExp(
+    `<link href="${href.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}" rel="stylesheet" media="print" onload="this.media='all'"`
+  );
+
+  assert(
+    deferredCssPattern.test(html),
+    `${href} should be deferred so font/icon CSS does not block first paint`
+  );
+}

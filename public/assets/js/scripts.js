@@ -4,6 +4,9 @@ function getRandomInt(min, max) {
 
 const prefersReducedMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 window.__reduceMotion = prefersReducedMotion === true;
+window.isSmallScreen = window.isSmallScreen || function() {
+  return window.matchMedia && window.matchMedia('(max-width: 767px)').matches;
+};
 window.runAfterIdle = window.runAfterIdle || function(callback, timeout) {
   if ('requestIdleCallback' in window) {
     requestIdleCallback(callback, { timeout: timeout || 1500 });
@@ -11,6 +14,51 @@ window.runAfterIdle = window.runAfterIdle || function(callback, timeout) {
   }
   setTimeout(callback, 0);
 };
+window.loadScriptOnce = window.loadScriptOnce || function(src, callback) {
+  var existing = document.querySelector('script[src="' + src + '"]');
+  if (existing) {
+    existing.addEventListener('load', function() {
+      if (callback) callback();
+    }, { once: true });
+    if (existing.dataset.loaded === 'true' && callback) callback();
+    return;
+  }
+
+  var script = document.createElement('script');
+  script.src = src;
+  script.async = true;
+  script.onload = function() {
+    script.dataset.loaded = 'true';
+    if (callback) callback();
+  };
+  document.body.appendChild(script);
+};
+
+function hydrateHeroVideo() {
+  var video = document.getElementById('video-source');
+
+  if (!video || prefersReducedMotion || window.isSmallScreen()) {
+    if (video) {
+      video.pause();
+      video.removeAttribute('autoplay');
+      video.setAttribute('preload', 'none');
+    }
+    return;
+  }
+
+  if (!video.querySelector('source') && video.getAttribute('data-src')) {
+    var source = document.createElement('source');
+    source.src = video.getAttribute('data-src');
+    source.type = 'video/mp4';
+    video.appendChild(source);
+    video.load();
+  }
+
+  var play = video.play();
+  if (play && typeof play.catch === 'function') {
+    play.catch(function() {});
+  }
+}
 
 $(document).ready(function() {
 
@@ -53,12 +101,17 @@ $(document).ready(function() {
       });
     }
 
-    if (!prefersReducedMotion && window.ScrollReveal) {
-      window.sr = ScrollReveal();
-      // sr.reveal('.card');
-      sr.reveal('.profile-summary');
-      // sr.reveal('.grid');
-      sr.reveal('.reveal');
+    if (!prefersReducedMotion && !window.isSmallScreen()) {
+      window.runAfterIdle(function() {
+        window.loadScriptOnce('https://unpkg.com/scrollreveal@4.0.9/dist/scrollreveal.min.js', function() {
+          if (!window.ScrollReveal) return;
+          window.sr = ScrollReveal();
+          // sr.reveal('.card');
+          sr.reveal('.profile-summary');
+          // sr.reveal('.grid');
+          sr.reveal('.reveal');
+        });
+      }, 2000);
     }
   }
 
@@ -79,6 +132,7 @@ window.onload = () => {
     video.removeAttribute('autoplay');
     video.setAttribute('preload', 'none');
   }
+  window.runAfterIdle(hydrateHeroVideo, 2500);
 
   // var basicTimeline = anime.timeline();
   //
@@ -176,12 +230,18 @@ window.onload = () => {
     // $('#subtitle').text('Full Stack Web Developer');
   }
 
-  if (prefersReducedMotion || !window.anime) {
+  if (prefersReducedMotion || window.isSmallScreen()) {
     animateSubtitle();
     return;
   }
 
   window.runAfterIdle(function() {
+    window.loadScriptOnce('assets/js/anime.min.js', function() {
+      if (!window.anime) {
+        animateSubtitle();
+        return;
+      }
+
     var lineDrawing = anime({
       targets: '#lineDrawing .lines path',
       strokeDashoffset: [anime.setDashoffset, 0],
@@ -213,5 +273,6 @@ window.onload = () => {
     });
 
     lineDrawing.finished.then(animateSubtitle);
+    });
   }, 2000);
 }
