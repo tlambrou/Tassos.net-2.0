@@ -1,0 +1,119 @@
+name: PR Preview and Lighthouse
+
+on:
+  pull_request:
+    types:
+      - opened
+      - reopened
+      - synchronize
+      - ready_for_review
+
+permissions:
+  contents: read
+  pull-requests: read
+  issues: write
+
+concurrency:
+  group: pr-preview-lighthouse-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+jobs:
+  preview-lighthouse:
+    name: Test Vercel preview and run Lighthouse
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Verify Vercel secrets
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+          VERCEL_AUTOMATION_BYPASS_SECRET: ${{ secrets.VERCEL_AUTOMATION_BYPASS_SECRET }}
+        run: |
+          missing=0
+          for name in VERCEL_TOKEN VERCEL_ORG_ID VERCEL_PROJECT_ID VERCEL_AUTOMATION_BYPASS_SECRET; do
+            if [ -z "${!name}" ]; then
+              echo "::error::Missing required repository secret: $name"
+              missing=1
+            fi
+          done
+          exit "$missing"
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run tests
+        run: npm test
+
+      - name: Find Vercel preview deployment
+        id: preview
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+          PR_HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+          PR_HEAD_REF: ${{ github.event.pull_request.head.ref }}
+          PR_REPO_OWNER: ${{ github.event.pull_request.head.repo.owner.login }}
+          PR_REPO_NAME: ${{ github.event.pull_request.head.repo.name }}
+        run: |
+          preview_url="$(node .github/scripts/find-vercel-preview.js)"
+          echo "preview_url=$preview_url" >> "$GITHUB_OUTPUT"
+          echo "Preview URL: $preview_url"
+
+      - name: Smoke test preview URL
+        env:
+          VERCEL_AUTOMATION_BYPASS_SECRET: ${{ secrets.VERCEL_AUTOMATION_BYPASS_SECRET }}
+        run: |
+          curl --fail --show-error --silent --location --head \
+            --header "x-vercel-protection-bypass: $VERCEL_AUTOMATION_BYPASS_SECRET" \
+            "${{ steps.preview.outputs.preview_url }}"
+
+      - name: Run Lighthouse mobile
+        env:
+          VERCEL_AUTOMATION_BYPASS_SECRET: ${{ secrets.VERCEL_AUTOMATION_BYPASS_SECRET }}
+        run: |
+          npx lighthouse@12.8.2 "${{ steps.preview.outputs.preview_url }}" \
+            --quiet \
+            --chrome-flags="--headless=new --no-sandbox" \
+            --extra-headers "{\"x-vercel-protection-bypass\":\"$VERCEL_AUTOMATION_BYPASS_SECRET\"}" \
+            --output=json \
+            --output-path=./lighthouse-mobile.json
+
+      - name: Run Lighthouse desktop
+        env:
+          VERCEL_AUTOMATION_BYPASS_SECRET: ${{ secrets.VERCEL_AUTOMATION_BYPASS_SECRET }}
+        run: |
+          npx lighthouse@12.8.2 "${{ steps.preview.outputs.preview_url }}" \
+            --quiet \
+            --preset=desktop \
+            --chrome-flags="--headless=new --no-sandbox" \
+            --extra-headers "{\"x-vercel-protection-bypass\":\"$VERCEL_AUTOMATION_BYPASS_SECRET\"}" \
+            --output=json \
+            --output-path=./lighthouse-desktop.json
+
+      - name: Upload Lighthouse reports
+        uses: actions/upload-artifact@v4
+        with:
+          name: lighthouse-${{ github.event.pull_request.number }}-${{ github.event.pull_request.head.sha }}
+          path: |
+            lighthouse-mobile.json
+            lighthouse-desktop.json
+
+      - name: Comment Lighthouse scores
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_SHA: ${{ github.event.pull_request.head.sha }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+          PREVIEW_URL: ${{ steps.preview.outputs.preview_url }}
+        run: node .github/scripts/comment-lighthouse-results.js lighthouse-mobile.json lighthouse-desktop.json

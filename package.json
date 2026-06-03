@@ -8,7 +8,7 @@
   },
   "scripts": {
     "start": "nodemon -e js,jade,html",
-    "test": "node test/reduced-motion-css.test.js && node test/accessibility-html.test.js"
+    "test": "node test/run-tests.js"
   },
   "keywords": [
     "Tassos",
