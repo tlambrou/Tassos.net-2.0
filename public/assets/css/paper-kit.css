@@ -10026,6 +10026,7 @@ body {
   margin: 0 auto 0;
 }
 .features-4 .trubric-container img {
+  height: auto;
   max-width: 100%;
   max-height: 420px;
 }

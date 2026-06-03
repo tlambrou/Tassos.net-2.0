@@ -2628,6 +2628,7 @@ pre.prettyprint {
 
 .grid__img {
   display: block;
+  height: auto;
   max-width: 100%;
 }
 
@@ -2769,6 +2770,7 @@ pre.prettyprint {
 
 .grid__item .grid__link .grid__img {
   border-radius: 14px;
+  height: auto !important;
 }
 
 .first-card {
